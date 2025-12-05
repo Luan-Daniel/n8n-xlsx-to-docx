@@ -1,104 +1,88 @@
-
 # Automação Local de XLSX para Documentos com n8n conteinerizado e GUI Python
 
-English version: [docs/readme_en.md](docs/readme_en.md)
+English Version: [docs/readme_en.md](docs/readme_en.md)
 
-## Visão Geral do Projeto
-Este é um projeto de prova de conceito que automatiza o processamento de planilhas XLSX e geração de documentos usando workflows do n8n, tudo executando localmente. Ele fornece uma GUI Python amigável para gerenciar o contêiner Docker do n8n, fazer upload de arquivos e recuperar resultados. O projeto visa simplificar a automação de workflows para não-desenvolvedores, tornando a configuração e uso o mais fácil possível.
+## Visão Geral
+Este projeto é uma prova de conceito que automatiza o processamento de planilhas XLSX e a geração de documentos utilizando workflows do n8n, tudo executado localmente. Ele inclui uma interface gráfica amigável desenvolvida em Python para gerenciar o contêiner Docker do n8n, realizar upload de arquivos e recuperar resultados. O objetivo principal é simplificar a automação de workflows para usuários não técnicos, tornando a configuração e o uso acessíveis.
 
-**Autores:**
-- Luan Daniel (desenvolvedor principal, design de workflow, implementação da GUI)
+A motivação para este projeto surgiu da necessidade de uma solução local e simples para gerar documentos a partir de dados de planilhas, sem depender de serviços em nuvem. Além disso, o projeto serve como base para futuras melhorias, como workflows mais complexos e uma experiência de usuário aprimorada.
 
+## Requisitos de Hardware
+Não há requisitos específicos de hardware para este projeto, além de um computador capaz de executar Docker e Python 3. Recomenda-se:
+- Processador com suporte a virtualização (para Docker)
+- 4 GB de RAM ou mais
+- 5 GB de espaço em disco disponível
 
-
-## Introdução
-Este projeto foi motivado pela necessidade de uma solução simples e local para automatizar a geração de documentos a partir de dados de planilhas, sem depender de serviços em nuvem. O projeto também visa servir como base para desenvolvimento futuro, incluindo workflows mais complexos e experiência de usuário aprimorada.
-
-
-
-## Requisitos do Sistema
-Veja [`docs/dependencies.md`](docs/dependencies_pt.md) para detalhes completos e instruções de instalação.
-
-- **Linux:** Qualquer distribuição recente
-- **macOS:** Versão recente (não testado)
-- **Windows:** WSL2 instalado e configurado como padrão
-- **Software necessário:**
+## Requisitos de Software
+- **Sistema Operacional:**
+  - Linux (qualquer distribuição recente)
+  - macOS (não testado)
+  - Windows (com WSL2 configurado como padrão)
+- **Software Necessário:**
   - Docker
   - Python 3
   - pip3
   - python3-tk (para GUI)
   - curl, sqlite3, jq (usados nos scripts de configuração)
+- **Dependências Python:**
+  - Listadas no arquivo `src/requirements.txt`, automaticamente instaladas pelo script de entrada.
 
-Outras dependências são instaladas automaticamente durante a primeira execução. Acesso à internet é necessário para a configuração.
+Para detalhes de intalação de dependencias, consulte [`docs/dependencies_pt.md`](docs/dependencies_pt.md).
 
-
-
-## Guia de Instalação e Uso
-
-### Passos Gerais
-1. **Clone o repositório**
-   - No Windows, clone dentro do WSL2 ou fora de C:/Users para evitar problemas de permissão.
-2. **Execute o script de entrada**
+## Configuração do Ambiente
+### Passo a Passo de Configuração
+1. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/Luan-Daniel/n8n-xlsx-to-docx.git
+   cd n8n-xlsx-to-docx
+   ```
+2. **Execute o script de entrada:**
    - No Linux/macOS: `./run.sh`
    - No Windows: `./run.ps1`
-   - Isso configura o ambiente virtual Python e instala as dependências.
-3. **Aguarde a janela da GUI aparecer**
-   - Use o botão "Importar Dados do n8n" para extrair um workflow de exemplo e configurações de `n8n-files/user-data/default.zip`.
-   - AVISO: Você pode usar as credenciais fornecidas por conveniência, mas para produção, crie as suas próprias:
-     ```sh
-     N8N_USER_EMAIL=luandanielmelo@gmail.com
-     N8N_USER_PASSWORD=59fyXaSx4SqUPE9UdMDyhd1jYXSARuL7v2FDNqDI95RZrdtO
-     ```
-4. **Inicie o contêiner n8n** usando o botão da GUI.
-5. **Abra a interface web do n8n** e teste o workflow fazendo upload de um arquivo XLSX de exemplo pela GUI.
+3. **Aguarde a instalação das dependências:**
+   - O script configura o ambiente virtual Python e instala as dependências automaticamente.
+4. **Inicie a GUI:**
+   - A janela da GUI será exibida automaticamente após a configuração inicial.
+5. **Importe os dados do n8n:**
+   - Use o botão "Importar Dados do n8n" para carregar um workflow de exemplo e configurações de `n8n-files/user-data/default.zip`.
+   - Aviso: Utilize as credenciais fornecidas apenas para conveniência. Para uso em produção, crie suas próprias. Veja N8N_USER_EMAIL e N8N_USER_PASSWORD no `src/docker-n8n/.env` descompactado de `n8n-files/user-data/default.zip`.
+6. **Inicie o contêiner n8n:**
+   - Utilize o botão correspondente na GUI.
+7. **Teste o workflow:**
+   - Faça upload de um arquivo XLSX de exemplo pela GUI e recupere o documento gerado.
 
-### Uso subsequente:
-1. Inicie/pare o contêiner Docker do n8n usando a GUI.
-2. Use a GUI para baixar ou enviar um arquivo XLSX para acionar o workflow. Planilha de exemplo [aqui](https://docs.google.com/spreadsheets/d/1ozqeJ4xOjd_rN_tQ1jfRHwIGtqdUUawjQhnJll25PGw/edit?usp=sharing).
-3. Recupere o documento gerado do diretório de saída especificado na GUI.
-4. Use a GUI para abrir a interface web do n8n para gerenciamento de workflows.
-5. Os dados do n8n podem ser exportados/importados via arquivos zip para facilitar a configuração em novas máquinas.
+## Como Usar
+### Uso Diário
+1. **Inicie o contêiner Docker do n8n:**
+   - Use a GUI para iniciar/parar o contêiner conforme necessário.
+2. **Envie arquivos XLSX:**
+   - Faça upload de arquivos XLSX pela GUI para acionar o workflow.
+3. **Recupere os documentos gerados:**
+   - Os arquivos gerados estarão disponíveis no diretório `n8n-files/documents/`.
+4. **Gerencie workflows:**
+   - Acesse a interface web do n8n pela GUI para criar ou modificar workflows.
 
+## Estrutura do Projeto e Visão Geral de Implementação
+### Organização dos Arquivos
+- `src/entrypoint.py`: Configura o ambiente, verifica dependências e inicia a GUI.
+- `src/service-manager/main.py`: Aplicação GUI principal, gerencia o contêiner n8n e interações do usuário.
+- `src/docker-n8n/`: Scripts para construir e gerenciar o contêiner Docker do n8n.
+- `n8n-files/`: Diretório compartilhado com o contêiner n8n, contendo dados de exemplo e arquivos de workflow.
+- `docs/`: Documentação do projeto, incluindo dependências e ideias futuras.
 
-
-## Visão Geral da Funcionalidade
-
-- **Objetivo Principal:** Implementar um workflow n8n que processa um arquivo XLSX e gera um documento a partir dos dados, tudo localmente.
-- **GUI Python:** Gerencia o contêiner n8n, lida com download e envio de arquivos, e exibe resultados.
-![](docs/img/GUI.png)
-- **Workflow de Exemplo:**
-  - Acionado por requisição HTTP da GUI (nome do arquivo xlsx e nome do arquivo de template)
-  - Lê arquivo XLSX e template de pastas compartilhadas em `n8n-files/sheets/` e `n8n-files/templates/`, respectivamente.
-  - Processa dados e gera um arquivo .docx usando [Docxtemplater](https://github.com/jreyesr/n8n-nodes-docxtemplater).
-  - Salva resultado em `n8n-files/documents/`
-  - Envia HTTP POST para webhook da GUI com resultado ou código de erro.
-![](docs/img/workflow.png)
-
-
-## Visão Geral da Implementação
-
-**Principais arquivos e diretórios:**
-- `src/entrypoint.py`: Configura ambiente, verifica dependências, inicia a GUI
-- `src/service-manager/main.py`: Aplicação GUI principal, gerencia contêiner n8n e interações do usuário
-- `src/docker-n8n/`: Scripts para construir e gerenciar o contêiner Docker do n8n
-- `n8n-files/`: Compartilhado com o contêiner n8n, contém dados de exemplo e arquivos de workflow
-
-**Interações HTTP do Workflow:**
+### Principais Interações HTTP do Workflow:
 - GUI envia HTTP POST para webhook do n8n com informações do arquivo
 - n8n processa arquivos e envia resultado de volta para GUI via HTTP POST
 
-**Passos do Workflow de Exemplo:**
-1. Webhook recebe nomes de arquivos XLSX e template
-2. Lê arquivo XLSX usando o nó "Read Binary File"
-3. Processa com o nó "XLSX" para extrair dados
-4. Lê arquivo de template
-5. Mescla dados e gera .docx com Docxtemplater
-6. Salva .docx em `n8n-files/documents/`
-7. Envia resultado para webhook da GUI
+### Passos do Workflow de Exemplo:
+- Acionado por requisição HTTP da GUI (nome do arquivo xlsx e nome do arquivo de template)
+- Lê arquivo XLSX e template de pastas compartilhadas em `n8n-files/sheets/` e `n8n-files/templates/`, respectivamente.
+- Extrai os dados do XLSX e os mescla com o binario do template.
+- [Docxtemplater](https://github.com/jreyesr/n8n-nodes-docxtemplater) é usado para processar dados e gerar um documento DOCX.
+- Salva resultado em `n8n-files/documents/`
+- Envia HTTP POST para webhook da GUI com resultado ou código de erro.
 
-
-
-## Limitações Conhecidas e Trabalho Futuro
+### Limitações Conhecidas e Trabalho Futuro
 Devido a restrições de tempo, alguns recursos foram deixados incompletos:
 - Instalação automática de dependências do sistema está incompleta.
 - Processo de configuração pode ser melhorado (substituído por exportar/importar dados).
@@ -106,65 +90,23 @@ Devido a restrições de tempo, alguns recursos foram deixados incompletos:
 - Tratamento de erros precisa de melhorias.
 - Template docx está hardcoded; versões futuras devem permitir seleção pelo usuário.
 
+## Troubleshooting
+### Problemas Comuns e Soluções
+1. **Erro ao iniciar o contêiner Docker:**
+   - Verifique se o Docker está instalado e em execução.
+   - Certifique-se de que o usuário atual tem permissão para executar comandos Docker.
+2. **A GUI não aparece após executar o script:**
+   - Verifique se todas as dependências Python estão instaladas corretamente.
+   - Consulte o arquivo `src/requirements.txt` para instalar dependências manualmente.
+3. **Workflow do n8n não processa arquivos:**
+   - Certifique-se de que os arquivos XLSX e templates estão nos diretórios corretos (`n8n-files/sheets/` e `n8n-files/templates/`).
+   - Verifique os logs do contêiner n8n para identificar erros.
 
+## Imagens
+![](docs/img/GUI.png)
+*Figura 1: Interface Gráfica do Gerenciador de Serviço*
+![](docs/img/workflow.png)
+*Figura 2: Exemplo de Workflow do n8n*
 
-## Licença
-Este projeto é distribuído para fins educacionais.
-
-<!-- Authors notes: -->
-<!--title and paragraph summarizing project-->
-
-<!--Setup Guide-->
-<!-- System Dependencies instalation guide: points to dependencies.md -->
-<!-- Project installation guide:
-- Clone the repository (in windows, we recommend using cloning inside wsl2 or out of C:/Users subdirectories to avoid permission issues)
-- First execution will set up the virtual environment and install dependencies. See the guide for first execution below.
--->
-<!-- First execution guide:
-  - Run the entrypoint script according to your OS (./run.sh or ./run.ps1) and wait for python venv dependencies to be installed.
-  - When the GUI window appears, we recommend using the "Import n8n Data" button to extract a zip file containg a sample workflow. It also contains n8n settings, credentials, and environment variables, all setup.
-  - n8n-files/user-data/default.zip is provided for convenience, but you can setup your own n8n credentials and workflow on the fly if you prefer.
-```sh
-N8N_USER_EMAIL=luandanielmelo@gmail.com
-N8N_USER_PASSWORD=59fyXaSx4SqUPE9UdMDyhd1jYXSARuL7v2FDNqDI95RZrdtO
-```
-(WARNING: this file is public to speed setup and make testing on new machines easier, you should eventually create your own credentials for production use)
-  - After importing the n8n data, you can start the n8n container using the button on the GUI.
-  - You can then open the n8n web interface using the provided button, and test the workflow by uploading a sample xlsx file using the service manager GUI.
-  - For now, the workflow is very simple. But can be upgraded to do more complex tasks as needed.
- -->
-
-<!-- Functionality overview:
-The projects main goal was to implement an n8n workflow that processes an xlsx file and generates a document from the data, **all locally**. It serves as a proof of concept and basis for further development.
-
-As the project evolved, a GUI application was created to manage the n8n container and provide a user-friendly interface for uploading files and retrieving results. This application also handles dependency management and setup, making it easier for end users to get started.
-
-Due to time constraints, some features were left incomplete: 
-- automatic system dependencies installation.
-- improved setup process (replaced by export/import data).
-- use of javascript components to create data visualization (components install but remain unused/untested).
-- better error handling.
--->
-
-<!-- Implementation overview:
-
-Main files and directories:
-- src/entrypoint.py: main entrypoint script, handles dependency installation and launching the service manager GUI.
-- src/service-manager/main.py: main GUI application, handles n8n container management and user interactions.
-- src/docker-n8n/: contains scripts for building and managing the n8n docker container.
-- n8n-files/: binds to the n8n container, used to share files with the workflow. Also contains sample n8n data for easy setup.
-
-Sample workflow HTTP interactions:
-- The service manager GUI communicates with the n8n workflow using HTTP requests to webhooks:
-- GUI post http request -> n8n webhook -> workflow processing -> n8n post http request -> GUI webhook.
-- The n8n webhook expects to get the xlsx file name and template file name. It triggers the workflow to read the indicated files from n8n-files/sheets/ and n8n-files/templates/, respectively;
-- After processing, the workflow sends a HTTP POST request to the GUI webhook with the resulting files list or error code.
-
-Sample workflow implementation description:
-- The workflow is triggered by a webhook that receives the xlsx file name and template file name.
-- It reads the xlsx file using the "Read Binary File" node, and processes it using the "XLSX" node to extract data into json. (Sample xlsx sheet [here](https://docs.google.com/spreadsheets/d/1ozqeJ4xOjd_rN_tQ1jfRHwIGtqdUUawjQhnJll25PGw/edit?usp=sharing))
-- The template file is read similarly, but kept in binary form.
-- Their data is merged and sent to the Docxtemplater node, which generates a .docx file using the template and xlsx data.
-- Finally, the resulting .docx file is saved to n8n-files/documents/ using the "Write Binary File" node.
-- The workflow then sends a HTTP POST request to the GUI webhook with the resulting files list or error code.
--->
+## Contribuidores
+- **Luan Daniel (20102096):** Desenvolvedor principal, design de workflow, implementação da GUI.
