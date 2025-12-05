@@ -1,3 +1,14 @@
-**/.env
-src/data/**
-tmp/**
+# Ignore environment files
+.env
+src/docker-n8n/n8n-data
+
+# Python
+.venv/
+__pycache__/
+
+# app data folders
+n8n-files/sheets/
+n8n-files/documents/
+n8n-files/downloads/
+n8n-files/images/
+tmp/

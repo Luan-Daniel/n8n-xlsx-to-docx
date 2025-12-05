@@ -45,6 +45,18 @@ extract_workflow_id() {
 }
 
 # -- N8N SETUP START --
+
+# Check if npm packages are installed (for community nodes)
+if ! docker exec -it -u root "$CONTAINER_NAME" sh -c "ls /home/node/.n8n/nodes/node_modules/" >/dev/null 2>&1; then
+  echo "  [i] npm packages not found. Installing..."
+  # Install the JS charting library and statistical libraries (not sure if this will work inside the n8n script nodes)
+  docker exec -it -u root "$CONTAINER_NAME" sh -c "npm install -g chartjs-node-canvas@4 simple-statistics jstat mathjs @stdlib/stats-kruskal-test --save"
+  # Install docxtemplater node
+  docker exec -it -u root "$CONTAINER_NAME" sh -c "cd /home/node/.n8n/nodes && npm install n8n-nodes-docxtemplater@1.0.1 --save"
+else
+  echo "  [i] Node modules directory found. Will assume packages are installed. (did not check individual packages)"
+fi
+
 # User setup
 sleep 5 # give the db some time to get ready (the alternative is checking. maybe a thing todo later)
 IS_SETUP_DONE=$(sqlite3 "$DB" "SELECT value FROM settings WHERE key = 'userManagement.isInstanceOwnerSetUp';")

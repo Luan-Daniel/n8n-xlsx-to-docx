@@ -1,0 +1,3 @@
+[submodule "src/scripts/js-shapiro-wilk"]
+	path = src/scripts/js-shapiro-wilk
+	url = https://github.com/Luan-Daniel/js-shapiro-wilk

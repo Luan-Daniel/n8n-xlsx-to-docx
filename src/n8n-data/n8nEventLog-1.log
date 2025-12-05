@@ -1,2 +1,0 @@
-{"__type":"$$EventMessageAudit","id":"a4890a82-361c-48a2-beeb-99c4f1cbe28f","ts":"2025-11-06T19:00:32.686+00:00","eventName":"n8n.audit.user.login.success","message":"n8n.audit.user.login.success","payload":{"userId":"c9a58e92-8719-41d5-ae79-01d9d797e14b","_email":"luandanielmelo@gmail.com","_firstName":"Luan","_lastName":"Melo","globalRole":"global:owner","authenticationMethod":"email"}}
-{"__type":"$$EventMessageConfirm","confirm":"a4890a82-361c-48a2-beeb-99c4f1cbe28f","ts":"2025-11-06T19:00:32.770+00:00","source":{"id":"0","name":"eventBus"}}
